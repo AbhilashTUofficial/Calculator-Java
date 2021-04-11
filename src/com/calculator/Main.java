@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 
 public class Main extends JFrame implements Variables, ActionListener {
 
-    long num1=0;
-    long num2=0;
-    char operator= ' ';
-    int opIndex;
-    int numStartIndex=0;
+    long num1 = 0;
+    long num2 = 0;
+    char operator = ' ';
+    String value;
+    int numStartIndex = 0;
     JFrame win;
+    JFrame help;
     JPanel inputPanel = new JPanel();
-    JPanel lowerPanel = new JPanel();
     TextField resultDisplay;
     JButton[] numBtn = new JButton[10];
     JButton[] funcBtn = new JButton[11];
@@ -109,11 +109,19 @@ public class Main extends JFrame implements Variables, ActionListener {
         win.add(inputPanel);
         win.setVisible(true);
     }
+    public void Help(){
+        /************************** Frame Section ******************************/
+        help = new JFrame("Calculator Help");
+        help.setBounds(700, 100, 600, windowHeight);
+        help.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        help.setResizable(false);
+        help.setLayout(null);
+        help.setAlwaysOnTop(true);
+        help.setVisible(true);
 
-    public int calc(int n1,int n2,int i){
-
-        return n1;
     }
+
+
     public static void main(String[] args) {
         new Main();
     }
@@ -127,18 +135,89 @@ public class Main extends JFrame implements Variables, ActionListener {
                 }
             }
         }
+
+
+        /******************************** Operation Button Insert **********************************/
         if (e.getSource() == addBtn) {
             try {
                 if (resultDisplay.getText().charAt(resultDisplay.getText().length() - 1) != '+') {
-                    opIndex=resultDisplay.getText().length();
-                    System.out.println(resultDisplay.getText().indexOf('+'));
-                    num1= Long.parseLong(resultDisplay.getText().substring(0,resultDisplay.getText().indexOf('+')-1));
                     resultDisplay.setText(resultDisplay.getText().concat("+"));
-                    System.out.println(num1);
 
                 }
             } catch (Exception x) {
             }
+        }
+        if (e.getSource() == subBtn) {
+            try {
+                if (resultDisplay.getText().charAt(resultDisplay.getText().length() - 1) != '-') {
+                    resultDisplay.setText(resultDisplay.getText().concat("-"));
+                }
+            } catch (Exception x) {
+            }
+        }
+        if (e.getSource() == mulBtn) {
+            try {
+                if (resultDisplay.getText().charAt(resultDisplay.getText().length() - 1) != '*') {
+                    resultDisplay.setText(resultDisplay.getText().concat("x"));
+
+                }
+            } catch (Exception x) {
+            }
+        }
+        if (e.getSource() == divBtn) {
+            try {
+                if (resultDisplay.getText().charAt(resultDisplay.getText().length() - 1) != '/') {
+                    resultDisplay.setText(resultDisplay.getText().concat("/"));
+
+                }
+            } catch (Exception x) {
+            }
+        }
+        /********************************************************************************************/
+
+
+        if (e.getSource() == equalBtn) {
+            try {
+                System.out.println(resultDisplay.getText());
+                int len = resultDisplay.getText().length();
+                String math = resultDisplay.getText();
+                for (int i = 0; i <= len; i++) {
+                    if (math.charAt(i) == '+' || math.charAt(i) == '-' || math.charAt(i) == '/' || math.charAt(i) == 'x') {
+                        operator = math.charAt(i);
+                        System.out.println(operator);
+                        num1 = Long.parseLong(math.substring(numStartIndex, i));
+                        num2 = Long.parseLong(math.substring(i + 1, len));
+                        switch (operator) {
+                            case '+':
+                                value = String.valueOf(num1 + num2);
+                                resultDisplay.setText(value);
+                                break;
+                            case '-':
+                                value = String.valueOf(num1 - num2);
+                                System.out.println(num2);
+                                resultDisplay.setText(value);
+                                break;
+
+                            case '/':
+                                value = String.valueOf(num1 / num2);
+                                resultDisplay.setText(value);
+                                break;
+                            case 'x':
+                                value = String.valueOf(num1 * num2);
+                                resultDisplay.setText(value);
+                                break;
+                        }
+
+                    }
+
+                }
+            } catch (Exception x) {
+
+            }
+        }
+        if (e.getSource() == QBtn) {
+            Help();
+
         }
         if (e.getSource() == clearAllBtn) {
             resultDisplay.setText("");
@@ -146,7 +225,8 @@ public class Main extends JFrame implements Variables, ActionListener {
         }
         if (e.getSource() == clrBtn) {
             try {
-                System.out.println(resultDisplay.getText().charAt(resultDisplay.getText().length()-1));
+                String str=resultDisplay.getText().substring(0,resultDisplay.getText().length()-1);
+                resultDisplay.setText(str);
             } catch (Exception x) {
             }
         }
